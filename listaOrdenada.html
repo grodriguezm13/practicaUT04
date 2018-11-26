@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Implementación de una lista</title>
+  <meta charset="utf-8"/>  
+</head>
+<body>
+  <h1>Implementación de una lista ordenada de objetos con funciones de array</h1>
+  Nombre:
+  <input type="text" id="nombre" value="" placeholder="Nombre" onfocus="this.value=''"/><br>
+  Apellido:
+  <input type="text" id="apellido" value="" placeholder="Apellido" onfocus="this.value=''"/><br>
+  Posicion:
+  <select id="posicion">
+    <option value="">-</option>
+    <option value="0">0</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+    <option value="10">10</option>
+  </select><br>
+  <button id="poner" onclick="rellenar(document.getElementById('nombre').value, document.getElementById('apellido').value);">Añade persona</button>
+  <button id="quitarPosicion" onclick="eliminarEnPosicion(document.getElementById('posicion').value);">Consume posicion</button>
+  <button id="quitarElemento" onclick="eliminar(document.getElementById('nombre').value, document.getElementById('apellido').value);">Eliminar persona</button>
+  <hr>
+  Si no se introduce ninguna posicion la persona se añade al final de la lista.<br>
+  Para el boton consume posicion seleccionar solamente una posicion.<br>
+  Para el boton eliminar persona solo introducir los datos en la casilla.<br>
+  <br><br>
+
+  <p id="error" style="color:red"></p> 
+  <div id="lista">
+  </div>
+  <script src="listaOrdenada.js"></script>
+</body>
+</html>
