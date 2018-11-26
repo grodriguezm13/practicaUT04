@@ -44,7 +44,7 @@ function ArrayPersonas(){
         var i = 0;
         var colocado = false;
         if (!(elem instanceof Person)) {
-            throw new Error ("El elemento no es objeto Person");
+            throw new noneInstanceOf();
         }
         if (!this.isFull()){
             //Si esta vacia se añade a la primera posicion
@@ -76,7 +76,7 @@ function ArrayPersonas(){
                 }//Fin del while
             }//Fin del if empty
         } else {
-            throw new Error ("La lista está llena. No puedes añadir mas elementos");
+            throw new fullList();
         }
         return longitud;
     };
@@ -89,7 +89,7 @@ function ArrayPersonas(){
         if (index < longitud) {
             elemento = list[index].datos();
         } else{
-            throw new Error ("El indice no debe ser mayor que la longitud de la lista ("+longitud+")");
+            throw new outIndex();
         }
         return elemento;
     };
@@ -112,7 +112,7 @@ function ArrayPersonas(){
         if ((elem instanceof Person)) {
             return list.indexOf(elem);
         }else{
-            throw new Error ("El elemento no es objeto Person");
+            throw new noneInstanceOf();
         }
     };
 
@@ -121,7 +121,7 @@ function ArrayPersonas(){
         if ((elem instanceof Person)) {
             return list.lastIndexOf(elem);
         }else{
-            throw new Error ("El elemento no es objeto Person");
+            throw new noneInstanceOf();
         }
     };
 
@@ -143,7 +143,7 @@ function ArrayPersonas(){
         if (!this.isEmpty(list)){
             primero = list[0].datos(); 		
         } else {
-            throw new Error ("La lista esta vacia");
+            throw new emptyList();
         }
         return primero;
     };
@@ -154,7 +154,7 @@ function ArrayPersonas(){
         if (!this.isEmpty()){
             ultimo = list[this.size()-1].datos(); 		
         } else {
-            throw new Error ("La lista esta vacia");
+            throw new emptyList();
         }
         return ultimo;
     };
@@ -164,12 +164,12 @@ function ArrayPersonas(){
         var borrado = list[index].datos();
         var longitud = this.size();
         if (index >= longitud) {
-            throw new Error ("El indice no debe ser mayor que la longitud de la lista ("+longitud+")");
+            throw new outIndex();
         } 
         if (!this.isEmpty()){
             list.splice(index, 1);
         } else {
-            throw new Error ("La lista está vacia. No puedes eliminar elementos");
+            throw new removeEmpty();
         }
         return borrado;
     };
@@ -185,12 +185,62 @@ function ArrayPersonas(){
                 eliminado = true;
             }
         }else{
-            throw new Error ("El elemento no es un objeto Person");
+            throw new noneInstanceOf();
         }
         return eliminado;
     };
 
 }//Fin de ArrayPersonas
+
+/* FUNCIONES DE ERRORES */
+/* objeto BaseException */
+function BaseException() {} //Objeto vacio
+BaseException.prototype = new Error(); //Herencia del objeto Error.
+BaseException.prototype.constructor = BaseException; //Definimos el constructor
+//Sobrescribimos el método toString para personalizarlos
+BaseException.prototype.toString = function(){
+	return this.name + ": " + this.message;
+};
+
+//Error de el objeto no es Person
+function noneInstanceOf(){ 
+    this.name = "noneInstanceOf";
+    this.message = "El elemento no es un objeto Person";
+}
+noneInstanceOf.prototype = new BaseException(); //hereda de myError
+noneInstanceOf.prototype.constructor = noneInstanceOf; // creamos un constructor para este tipo de error
+
+//Error de lista llena
+function fullList(){ 
+    this.name = "fullList";
+    this.message = "La lista está llena. No puedes añadir mas elementos";
+}
+fullList.prototype = new BaseException(); //hereda de myError
+fullList.prototype.constructor = fullList; // creamos un constructor para este tipo de error
+
+//Error de lista llena
+function outIndex(){ 
+    this.name = "outIndex";
+    this.message = "El indice no debe ser mayor que la longitud de la lista ("+longitud+")";
+}
+outIndex.prototype = new BaseException(); //hereda de myError
+outIndex.prototype.constructor = outIndex; // creamos un constructor para este tipo de error
+
+//Error de lista llena
+function emptyList(){ 
+    this.name = "emptyList";
+    this.message = "La lista está vacia";
+}
+emptyList.prototype = new BaseException(); //hereda de myError
+emptyList.prototype.constructor = emptyList; // creamos un constructor para este tipo de error
+
+//Error de lista llena
+function removeEmpty(){ 
+    this.name = "emptyList";
+    this.message = "La lista está vacia. No se puede eliminar.";
+}
+emptyList.prototype = new BaseException(); //hereda de myError
+emptyList.prototype.constructor = emptyList; // creamos un constructor para este tipo de error
 
 /* FUNCIONES QUE USA LA PAGINA Y LA CONSOLA */ 
 
@@ -220,7 +270,8 @@ function eliminarEnPosicion(posicion){
     if (posicion != "") {
         try {
             //Se parsea la posicion a interge
-            listaPersonas.remove(parseInt(posicion));
+            posicion = parseInt(posicion);
+            listaPersonas.remove(posicion);
             lista.innerHTML = listaPersonas;
         } catch (err) {
             error.innerHTML = err;
@@ -286,6 +337,11 @@ function testFunciones() {
     console.log("Se vacia la lista: "); 
     listaTest.clear();
     console.log("Lista: " + listaTest.toString());
+    try {
+        console.log("Primer elemento de la lista: "+ listaTest.firstElement());
+    } catch (error) {
+        console.log("Primer elemento de la lista. Error: " + error.message);
+    }
 }
 
 window.onload = testFunciones;

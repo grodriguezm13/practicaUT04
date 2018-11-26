@@ -4,7 +4,11 @@
 
 Autor - Guillermo Rodriguez Moraga
 
-Version 1.0.1 - Creacion del repositorio
+Version 1.0.2 - Mejoras
+- Se han añadido la gestion de errores a ambos archivos .js
+- Se ha añadido a la funcion de testeo
+
+Version 1.0.1 - Añadido listaOrdenada
 - Se añade el fichero listaOrdenada.html
 - Se añade el fichero listaOrdenadad.js
 - Se crean las funciones para los objetos
